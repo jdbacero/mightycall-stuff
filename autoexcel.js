@@ -57,7 +57,8 @@ function getData2() {
 }
 document.getElementById("filter_result_all").checked = true
 
-pageSize = 20000
+// pageSize = 20000
+pageSize = 50
 
 exportToCsv = arr => {
     var CsvString = "";
@@ -114,7 +115,7 @@ let getDataArr = () => {
         let mc_duration_arr = mc_duration_formatted.split(":")
         let mc_duration_sec = parseFloat(mc_duration_arr[1])
         let mc_duration_min = parseFloat(mc_duration_arr[0])
-        let mc_duration_int = parseFloat((mc_duration_min * 60) + mc_duration_sec) / (60 * 60 * 24) 
+        let mc_duration_int = parseFloat((mc_duration_min * 60) + mc_duration_sec) / (60 * 60 * 24)
 
         if (audio_link != false) {
             let dataToBeAdded = [
@@ -124,11 +125,11 @@ let getDataArr = () => {
                 data.getElementsByTagName("td")[6].innerText, //connected to
                 data.getElementsByTagName("td")[7].innerText, //via
                 result, //result
-                mc_duration_int, //duration
+                mc_duration_formatted, //duration
                 disabled, //connected to
                 0, //duration
                 0, //waiting time
-                audio_link //audio link
+                "https://panel.mightycall.com" + audio_link //audio link
             ]
 
             arrWithRecording.push(dataToBeAdded)
@@ -191,34 +192,37 @@ function updateGrid2(data) {
 
 function withRecordingLink() {
     let audio_elem = []
-    let x = 0
+    let z = 0
     for (let data of arrWithRecording) {
         let audio_link = data[10]
         audio_elem.push(document.createElement('audio'))
-        audio_elem[x].setAttribute('src', audio_link)
-        x++
+        audio_elem[z].setAttribute('src', audio_link)
+        z++
     }
 
-    x = 0
+    let x = 0
     console.log("x back to " + x)
     for (let elem of audio_elem) {
-        elem.onloadedmetadata = () => {
+        elem.onloadedmetadata = (e) => {
             let duration = elem.duration
-            // console.log(x)
-            console.log(arrWithRecording[x])
+            // let duration = elem.duration
+            console.log(e)
+            console.log(e.duration)
             let mc_duration_formatted = arrWithRecording[x][6]
             let mc_duration_arr = mc_duration_formatted.split(":")
             let mc_duration_sec = parseFloat(mc_duration_arr[1])
             let mc_duration_min = parseFloat(mc_duration_arr[0])
             let mc_duration_int = parseFloat((mc_duration_min * 60) + mc_duration_sec)
 
-            let waiting_time = (mc_duration_int - duration) / (60 * 60 * 24)
+            let waiting_time = (mc_duration_int - duration)
 
-            arrWithRecording[x][8] = duration / (60 * 60 * 24) //duration
+            arrWithRecording[x][8] = duration //duration
             arrWithRecording[x][9] = waiting_time //waiting time
 
+            console.log("Duration is:", elem.duration)
             console.log(`Adding recording duration...
-            ${x+1} of ${arrWithRecording.length}`)
+            ${x + 1} of ${arrWithRecording.length}`)
+            console.log(arrWithRecording[x])
             x++
             elem.remove()
             elem.src = null

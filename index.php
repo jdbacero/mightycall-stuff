@@ -13,8 +13,8 @@
 
     <div id="someContainer"></div>
     <script>
-        // var userPassword = '50a44f088b90' // Jorex
-        var userPassword = 'b0b2701786ad' // Cielo
+        var userPassword = '50a44f088b90' // Jorex
+        // var userPassword = 'b0b2701786ad' // Cielo
         // const data = {
         //     // username: 'example',
         //     grant_type: 'client_credentials',
@@ -25,8 +25,8 @@
         var myform = new URLSearchParams();
         myform.append('grant_type', 'client_credentials');
         myform.append('client_id', '4fc75ac8-83a0-47b2-8e30-4976b47daebf');
-        // myform.append('client_secret', '50a44f088b90'); //Jorex
-        myform.append('client_secret', userPassword); //Cielo
+        myform.append('client_secret', '50a44f088b90'); //Jorex
+        // myform.append('client_secret', userPassword); //Cielo
 
 
         var credentials
